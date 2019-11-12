@@ -1,19 +1,48 @@
 {
-  "name": "language-fortran",
-  "main": "./lib/language-fortran",
-  "version": "2.1.9",
-  "description": "Syntax highlighting for Fortran in atom ",
-  "activationCommands": {
-    "atom-workspace": "language-fortran:toggleComment"
+  "_from": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+  "_id": "language-rql@2.1.9",
+  "_inBundle": false,
+  "_integrity": "sha512-HZlKkfucB+OtmO7WIUBAP4U8PsPH4Tc39LbTb0pyn2j6V1g2aHFJVoDgZCGD1CsfjxAE/Q6IZAvRDZd/N+wURg==",
+  "_location": "/language-rql",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+    "rawSpec": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+    "saveSpec": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+    "fetchSpec": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball"
   },
-  "repository": "https://github.com/dparkins/language-fortran",
-  "bugs": "https://github.com/dparkins/language-fortran/issues",
-  "license": "MIT",
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+  "_shasum": "7b001c8131e085dd93eb2745340d6cd4642d54e3",
+  "_spec": "https://www.atom.io/api/packages/language-rql/versions/2.1.9/tarball",
+  "_where": "/tmp/apm-install-dir-119107-13730-1p40cu6.djuc",
+  "activationCommands": {
+    "atom-workspace": "language-rql:toggleComment"
+  },
+  "bugs": {
+    "url": "https://github.com/dparkins/language-rql/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Syntax highlighting for Fortran in atom ",
   "engines": {
     "atom": ">0.50.0"
   },
+  "homepage": "https://github.com/dparkins/language-rql#readme",
   "keywords": [
     "grammar",
-    "fortran"
-  ]
+    "rql"
+  ],
+  "license": "MIT",
+  "main": "./lib/language-rql",
+  "name": "language-rql",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dparkins/language-rql.git"
+  },
+  "version": "2.1.9"
 }

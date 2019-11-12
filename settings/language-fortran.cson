@@ -1,4 +1,4 @@
-'.source.fortran':
+'.source.rql':
   'editor':
     'increaseIndentPattern': '(?ix)^\\s*(
         (contains|program)\\b
@@ -12,7 +12,7 @@
         |end(do|function|if|program|subroutine)?\\b
         |else(if)?\\b
       )'
-'.source.fortran.free':
+'.source.rql.free':
   'editor':
     'commentStart': '! '
     'commentEnd': ''
@@ -41,7 +41,7 @@
         )?\\b
         |else(if|where)?\\b
       )'
-'.source.fortran.modern':
+'.source.rql.modern':
   'editor':
     'commentStart': '! '
     'commentEnd': ''

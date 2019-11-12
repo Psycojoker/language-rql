@@ -8,7 +8,7 @@
 * Fixed bug causing Atom to crash when typing `CLASS`
 
 ## 1.5.0
-* Change `./scoped-properties/language-fortran.cson` to `./settings/language-fortran.cson`
+* Change `./scoped-properties/language-rql.cson` to `./settings/language-rql.cson`
 * Removed Modern - Fortran dependency on Punchcard - Fortran
 * Overhauled Modern - Fortran rules:
 * Improved rules for `WHERE` constructs/statements

@@ -6,7 +6,7 @@ module.exports =
   activate: ->
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
-      'language-fortran:toggleComment': => @toggleComment()
+      'language-rql:toggleComment': => @toggleComment()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -15,7 +15,7 @@ module.exports =
   toggleComment: ->
     commentToken = "C"
     if editor = atom.workspace.getActiveTextEditor()
-      if editor.getGrammar().scopeName is 'source.fortran.fixed'
+      if editor.getGrammar().scopeName is 'source.rql.fixed'
         if buffer = editor.getBuffer()
           for selection in editor.getSelections()
             range = selection.getBufferRange()

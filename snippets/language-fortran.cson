@@ -1,4 +1,4 @@
-'.source.fortran':
+'.source.rql':
   'Allocate Array':
     'prefix': 'al'
     'body': 'allocate(${1:array}, stat=${2:err})\nif ($2 /= 0) print *, "$1: Allocation request denied"$0'
@@ -290,7 +290,7 @@
   'Write':
     'prefix': 'write'
     'body': 'write(unit=${1:iounit}, fmt="(${2:format string})", iostat=${3:ios}${4:, advance=\'NO\'}) ${5:variables}\nif ( ${3:ios} /= 0 ) stop "Write error in file unit $1"$0'
-'.source.fortran.modern':
+'.source.rql.modern':
   'forall':
     'prefix': 'for'
     'body': 'forall (${1:i=1:100}${2:, mask})\n\t$0\nend forall'
