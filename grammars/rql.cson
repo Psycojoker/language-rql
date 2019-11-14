@@ -1,0 +1,2816 @@
+'comment': 'Specificities of rql'
+'name': 'rql'
+'scopeName': 'source.rql'
+'fileTypes': [
+  'rql'
+]
+'firstLineMatch': '(?i)-[*]- mode: rql free -[*]-'
+'injections':
+  'source.rql.free - ( string | comment | meta.preprocessor )':
+    'patterns':[
+      {'include': '#line-continuation-operator'}
+    ]
+  'string.quoted.double.rql':
+    'patterns':[
+      {'include': '#string-line-continuation-operator'}
+    ]
+  'string.quoted.single.rql':
+    'patterns':[
+      {'include': '#string-line-continuation-operator'}
+    ]
+'patterns': [
+  {'include': '#comments'}
+  {'include': '#constants'}
+  {'include': '#operators'}
+  {'include': '#array-constructor'}
+  {'include': '#parentheses'}
+  {'include': '#include-statement'}
+  {'include': '#import-statement'}
+  {'include': '#block-data-definition'}
+  {'include': '#function-definition'}
+  {'include': '#module-definition'}
+  {'include': '#program-definition'}
+  {'include': '#submodule-definition'}
+  {'include': '#subroutine-definition'}
+  {'include': '#procedure-definition'}
+  {'include': '#derived-type-definition'}
+  {'include': '#enum-block-construct'}
+  {'include': '#interface-block-constructs'}
+  {'include': '#procedure-specification-statement'}
+  {'include': '#type-specification-statements'}
+  {'include': '#specification-statements'}
+  {'include': '#control-constructs'}
+  {'include': '#control-statements'}
+  {'include': '#execution-statements'}
+  {'include': '#intrinsic-functions'}
+  {'include': '#variable'}
+]
+'repository':
+  # attributes:
+  'abstract-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\G\\s*\\b(abstract)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.rql.rql'
+  'access-attribute':
+    'patterns':[
+      {'include': '#private-attribute'}
+      {'include': '#public-attribute'}
+    ]
+  'allocatable-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(allocatable)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.allocatable.rql'
+  'asynchronous-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\G\\s*\\b(asynchronous)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.asynchronous.rql'
+  'codimension-attribute':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'begin': '(?i)\\G\\s*\\b(codimension)(?=\\s*\\[)'
+    'beginCaptures':
+      '1': 'name': 'storage.modifier.codimension.rql'
+    'end': '(?<!\\G)'
+    'patterns':[
+      {'include': '#brackets'}
+    ]
+  'contiguous-attribute':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'match': '(?i)\\G\\s*\\b(contiguous)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.contigous.rql'
+  'concurrent-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'begin': '(?i)\\G\\s*\\b(concurrent)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.while.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#parentheses'}
+      {'include': '#invalid-word'}
+    ]
+  'deferred-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(deferred)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.deferred.rql'
+  'dimension-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'begin': '(?i)\\s*\\b(dimension)(?=\\s*\\()'
+    'beginCaptures':
+      '1': 'name': 'storage.modifier.dimension.rql'
+    'end': '(?<!\\G)'
+    'patterns':[
+      {'include': '#parentheses-dummy-variables'}
+    ]
+  'elemental-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(elemental)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.elemental.rql'
+  'extends-attribute':
+    'begin': '(?i)\\s*\\b(extends)\\s*\\('
+    'beginCaptures':
+      '1': 'name': 'storage.modifier.extends.rql'
+    'end': '(?:\\)|(?=\\n))'
+    'patterns':[
+      {
+        'name': 'entity.name.derived-type.rql'
+        'match': '(?i)\\s*\\b([a-z]\\w*)\\b'
+      }
+    ]
+  'external-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(?i)\\s*\\b(external)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.external.rql'
+  'intent-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'begin': '(?i)\\s*\\b(intent)\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'storage.modifier.intent.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))|(?=[;!\\n])'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.left.rql'
+    'patterns':[
+      {
+        'match': '(?i)\\b(?:(in\\s*out)|(in)|(out))\\b'
+        'captures':
+          '1': 'name': 'storage.modifier.intent.in-out.rql'
+          '2': 'name': 'storage.modifier.intent.in.rql'
+          '3': 'name': 'storage.modifier.intent.out.rql'
+      }
+      {'include': '#invalid-word'}
+    ]
+  'intrinsic-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(?i)\\s*\\b(intrinsic)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.intrinsic.rql'
+  'language-binding-attribute':
+    'comment': 'Introduced in rql 2003 standard.'
+    'begin': '(?i)\\s*\\b(bind)\\s*\\('
+    'beginCaptures':
+      '1': 'name': 'storage.modifier.bind.rql'
+    'end': '(?:\\)|(?=\\n))'
+    'patterns':[
+      {
+        'name': 'variable.parameter.rql'
+        'match': '(?i)\\b(c)\\b'
+      }
+      {'include': '#dummy-variable'}
+      {'include': '$base'}
+    ]
+  'module-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?ix)\\s*\\b(module)\\b(?=\\s*(?:[;!\\n]|
+      [^\'";!\\n]*\\b(?:function|procedure|subroutine)\\b))'
+    'captures':
+      '1': 'name': 'storage.modifier.module.rql'
+  'non-intrinsic-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(non_intrinsic)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.non-intrinsic.rql'
+  'non-overridable-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(non_overridable)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.non-overridable.rql'
+  'nopass-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(nopass)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.nopass.rql'
+  'optional-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(optional)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.optional.rql'
+  'parameter-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(?i)\\s*\\b(parameter)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.parameter.rql'
+  'pass-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'patterns':[
+      {
+        'comment': 'Pass attribute with argument.'
+        'begin': '(?i)\\s*\\b(pass)\\s*\\('
+        'beginCaptures':
+          '1': 'name': 'storage.modifier.pass.rql'
+        'end': '\\)|(?=\\n)'
+        'patterns':[
+        ]
+      }
+      {
+        'comment': 'Pass attribute without argument.'
+        'match': '(?i)\\s*\\b(pass)\\b'
+        'captures':
+          '1': 'name': 'storage.modifier.pass.rql'
+      }
+    ]
+  'pointer-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(pointer)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.pointer.rql'
+  'private-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(private)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.private.rql'
+  'protected-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(protected)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.protected.rql'
+  'public-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(public)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.public.rql'
+  'pure-attribute':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'match': '(?i)\\s*\\b(?:(impure)|(pure))\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.impure.rql'
+      '2': 'name': 'storage.modifier.pure.rql'
+  'recursive-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(?i)\\s*\\b(?:(non_recursive)|(recursive))\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.non_recursive.rql'
+      '2': 'name': 'storage.modifier.recursive.rql'
+  'save-attribute':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(?i)\\s*\\b(save)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.save.rql'
+  'sequence-attribute':
+    'comment': 'Introduced in the rql 20?? standard.'
+    'match': '(?i)\\s*\\b(sequence)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.sequence.rql'
+  'target-attribute':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'match': '(?i)\\s*\\b(target)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.target.rql'
+  'value-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(value)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.value.rql'
+  'volatile-attribute':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'match': '(?i)\\s*\\b(volatile)\\b'
+    'captures':
+      '1': 'name': 'storage.modifier.volatile.rql'
+  'while-attribute':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'begin': '(?i)\\G\\s*\\b(while)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.while.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#parentheses'}
+      {'include': '#invalid-word'}
+    ]
+  # comments:
+  'comments':
+    'name': 'comment.line.rql'
+    'begin': '!'
+    'end': '(?=\\n)'
+  # constants:
+  'constants':
+    'patterns':[
+      {'include': '#logical-constant'}
+      {'include': '#numeric-constant'}
+      {'include': '#string-constant'}
+    ]
+  'logical-constant':
+    'comment': 'Logical constants'
+    'match': '(?i)(?:(\\.false\\.)|(\\.true\\.))'
+    'captures':
+      '1':'name': 'constant.language.logical.false.rql'
+      '2':'name': 'constant.language.logical.true.rql'
+  'numeric-constant':
+    'comment': 'Numeric constants'
+    'name': 'constant.numeric.rql'
+    'match': '(?ix)[\\+\\-]?(\\b\\d+\\.?\\d*|\\.\\d+)
+      (_\\w+|d[\\+\\-]?\\d+|e[\\+\\-]?\\d+(_\\w+)?)?(?![a-z_])'
+  'string-constant':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'patterns':[
+      {
+        'comment': 'Single quote string constants.'
+        'name': 'string.quoted.single.rql'
+        'begin': '\''
+        'beginCaptures':
+          '0': 'name': 'punctuation.definition.string.begin.rql'
+        'comment': 'String'
+        'end': '\''
+        'endCaptures':
+          '0': 'name': 'punctuation.definition.string.end.rql'
+        'applyEndPatternLast': 1
+        'patterns': [
+          {
+            'name': 'constant.character.escape.apostrophe.rql'
+            'match': '\'\''
+          }
+        ]
+      }
+      {
+        'comment': 'Double quote string constants.'
+        'name': 'string.quoted.double.rql'
+        'begin': '"'
+        'beginCaptures':
+          '0': 'name': 'punctuation.definition.string.begin.rql'
+        'comment': 'String'
+        'end': '"'
+        'endCaptures':
+          '0': 'name': 'punctuation.definition.string.end.rql'
+        'applyEndPatternLast': 1
+        'patterns': [
+          {
+            'name': 'constant.character.escape.quote.rql'
+            'match': '""'
+          }
+        ]
+      }
+    ]
+  # control constructs:
+  'control-constructs':
+    'patterns':[
+      {'include': '#named-control-constructs'}
+      {'include': '#unnamed-control-constructs'}
+    ]
+  'named-control-constructs':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'contentName': 'meta.named-construct.rql.modern'
+    'begin': '(?ix)([a-z]\\w*)\\s*(:)(?=\\s*(?:associate|block(?!\\s*data)|critical|do|forall|if|select|where)\\b)'
+    'end': '(?i)\\s*(?!\\b(?:associate|block(?!\\s*data)|critical|do|forall|if|select|where)\\b)\\b(?:\\b(\\1)\\b)?(?:\\s*([^\\s;!][^;!\\n]*?))?(?=\\s*[;!\\n])'
+    'endCaptures':
+      '2': 'name': 'invalid.error.rql.modern'
+    'applyEndPatternLast': 1
+    'patterns':[
+      {'include': '#unnamed-control-constructs'}
+    ]
+  'unnamed-control-constructs':
+    'patterns':[
+      {'include': '#associate-construct'}
+      {'include': '#block-construct'}
+      {'include': '#critical-construct'}
+      {'include': '#do-construct'}
+      {'include': '#forall-construct'}
+      {'include': '#if-construct'}
+      {'include': '#select-construct'}
+      {'include': '#where-construct'}
+    ]
+  'associate-construct':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'contentName': 'meta.block.associate.rql'
+    'begin': '(?i)\\b(associate)\\b(?=\\s*\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.associate.rql'
+    'end': '(?i)\\b(end\\s*associate)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endassociate.rql'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'block-construct':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'contentName': 'meta.block.block.rql'
+    'begin': '(?i)\\b(block)\\b(?!\\s*\\bdata\\b)'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.associate.rql'
+    'end': '(?i)\\b(end\\s*block)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endassociate.rql'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'critical-construct':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'contentName': 'meta.block.critical.rql'
+    'begin': '(?i)\\b(critical)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.associate.rql'
+    'end': '(?i)\\b(end\\s*critical)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endassociate.rql'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'do-construct':
+    'patterns':[
+      {
+        'match': '(?i)\\b(end\\s*do)\\b'
+        'captures':
+          '1': 'name': 'keyword.control.enddo.rql'
+      }
+      {
+        'comment': 'Introduced in the rql 1977 standard.'
+        'name': 'meta.do.labeled.rql'
+        'begin': '(?i)\\b(do)\\s+(\\d{1,5})'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.do.rql'
+          '2': 'name': 'constant.numeric.rql'
+        'end': '(?i)(?:^|(?<=;))(?=\\s*\\b\\2\\b)'
+        'patterns':[
+          {
+            'comment': 'Loop control.'
+            'begin': '(?i)\\G(?:\\s*(,)|(?!\\s*[;!\\n]))'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {'include': '#concurrent-attribute'}
+              {'include': '#while-attribute'}
+              {'include': '$base'}
+            ]
+          }
+          {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Introduced in the rql 1995 standard.'
+        'name': 'meta.block.do.unlabeled.rql'
+        'begin': '(?i)\\b(do)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.do.rql'
+        'end': '(?i)\\b(?:(continue)|(end\\s*do))\\b'
+        'endCaptures':
+          '1': 'name': 'keyword.control.continue.rql'
+          '2': 'name': 'keyword.control.enddo.rql'
+        'patterns':[
+          {
+            'comment': 'Loop control.'
+            'name': 'meta.loop-control.rql'
+            'begin': '(?i)\\G(?:\\s*(,)|(?!\\s*[;!\\n]))'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {'include': '#concurrent-attribute'}
+              {'include': '#while-attribute'}
+              {'include': '$base'}
+            ]
+          }
+          {
+            'comment': 'Loop body.'
+            'begin': '(?i)(?!\\s*\\b(continue|end\\s*do)\\b)'
+            'end': '(?i)(?=\\s*\\b(continue|end\\s*do)\\b)'
+            'patterns':[
+              {'include': '$base'}
+            ]
+          }
+        ]
+      }
+    ]
+  'forall-construct':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'begin': '(?i)\\b(forall)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.forall.rql'
+    'end': '(?<!\\G)'
+    'applyEndPatternLast': 1
+    'patterns':[
+      {
+        'comment': 'Loop control.'
+        'name': 'meta.loop-control.rql'
+        'begin': '(?i)\\G(?!\\s*[;!\\n])'
+        'end': '(?<!\\G)'
+        'patterns':[
+          {'include': '#parentheses'}
+          {'include': '#invalid-word'}
+        ]
+      }
+      {
+        'name': 'meta.block.forall.rql'
+        'begin': '(?<=\\))(?=\\s*[;!\\n])'
+        'end': '(?i)\\b(end\\s*forall)\\b'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endforall.rql'
+        'patterns':[
+          {'include': '$base'}
+        ]
+      }
+      {
+        'name': 'meta.statement.control.forall.rql'
+        'begin': '(?i)(?<=\\))(?!\\s*[;!\\n])'
+        'end': '\\n'
+        'patterns':[
+          {'include': '$base'}
+        ]
+      }
+    ]
+  'if-construct':
+    'begin': '(?i)\\b(if)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.if.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#logical-control-expression'}
+      {
+        'contentName': 'meta.block.if.rql'
+        'begin': '(?i)\\s*\\b(then)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.then.rql'
+        'end': '(?i)\\b(end\\s*if)\\b'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endif.rql'
+        'patterns':[
+          {
+            'comment': 'else if statement'
+            'begin': '(?i)\\b(else\\s*if)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.elseif.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {'include': '#parentheses'}
+              {
+                'match': '(?i)\\b(then)\\b'
+                'captures':
+                  '1': 'name': 'keyword.control.then.rql'
+              }
+              {'include': '#invalid-word'}
+            ]
+          }
+          {
+            'comment': 'else block'
+            'begin': '(?i)\\b(else)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.else.rql'
+            'end': '(?i)(?=\\b(end\\s*if)\\b)'
+            'patterns':[
+              {
+                'comment': 'rest of else line'
+                'begin': '\\G(?!\\s*\\n)'
+                'end': '(?=[;!\\n])'
+                'patterns':[
+                  {'include': '#invalid-word'}
+                ]
+              }
+              {
+                'begin': '(?i)(?!\\b(end\\s*if)\\b)'
+                'end': '(?i)(?=\\b(end\\s*if)\\b)'
+                'patterns':[
+                  {'include': '$base'}
+                ]
+              }
+            ]
+          }
+          {'include': '$base'}
+        ]
+      }
+      {
+        'name': 'meta.statement.control.if.rql'
+        'begin': '(?i)(?=\\s*[a-z])'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {'include': '$base'}
+        ]
+      }
+    ]
+  'select-construct':
+    'name': 'meta.block.select.rql'
+    'begin': '(?i)\\b(select)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.select.rql'
+    'end': '(?i)\\b(end\\s*select)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endselect.rql'
+    'patterns':[
+      {
+        'comment': 'Select case construct. Introduced in the rql 1990 standard.'
+        'begin': '(?i)\\G\\s*\\b(case)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.case.rql'
+        'end': '(?i)(?=\\b(end\\s*select)\\b)'
+        'patterns':[
+          {'include': '#parentheses'}
+          {
+            'begin': '(?i)\\b(case)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.case.rql'
+            'end': '(?i)(?=[;!\\n])'
+            'patterns':[
+              {
+                'match': '(?i)\\G\\s*\\b(default)\\b'
+                'captures':
+                  '1': 'name': 'keyword.control.default.rql'
+              }
+              {'include': '#parentheses'}
+              {'include': '#invalid-word'}
+            ]
+          }
+          {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Select type construct. Introduced in the rql 2003 standard.'
+        'begin': '(?i)\\G\\s*\\b(type)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.case.rql'
+        'end': '(?i)(?=\\b(end\\s*select)\\b)'
+        'patterns':[
+          {'include': '#parentheses'}
+          {
+            'begin': '(?i)\\b(?:(class)|(type))\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.class.rql'
+              '2': 'name': 'keyword.control.type.rql'
+            'end': '(?i)(?=[;!\\n])'
+            'patterns':[
+              {
+                'match': '(?i)\\G\\s*\\b(default)\\b'
+                'captures':
+                  '1': 'name': 'keyword.control.default.rql'
+              }
+              {
+                'match': '(?i)\\G\\s*\\b(is)\\b'
+                'captures':
+                  '1': 'name': 'keyword.control.is.rql'
+              }
+              {'include': '#parentheses'}
+              {'include': '#invalid-word'}
+            ]
+          }
+          {'include': '$base'}
+        ]
+      }
+    ]
+  'where-construct':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'begin': '(?i)\\b(where)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.where.rql'
+    'end': '(?<!\\G)'
+    'applyEndPatternLast': 1
+    'patterns':[
+      {'include': '#logical-control-expression'}
+      {
+        'name': 'meta.block.where.rql'
+        'begin': '(?<=\\))(?=\\s*[;!\\n])'
+        'end': '(?i)\\b(end\\s*where)\\b'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endwhere.rql'
+        'patterns':[
+          {
+            'begin': '(?i)\\s*\\b(else\\s*where)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.elsewhere.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {'include': '#parentheses'}
+              {'include': '#invalid-word'}
+            ]
+          }
+          {'include': '$base'}
+        ]
+      }
+      {
+        'name': 'meta.statement.control.where.rql'
+        'begin': '(?i)(?<=\\))(?!\\s*[;!\\n])'
+        'end': '\\n'
+        'patterns':[
+          {'include': '$base'}
+        ]
+      }
+    ]
+  # control statements:
+  'control-statements':
+    'comment': 'Statements controling the flow of the program'
+    'patterns':[
+      {'include': '#assign-statement'}
+      {'include': '#call-statement'}
+      {'include': '#continue-statement'}
+      {'include': '#cycle-statement'}
+      {'include': '#entry-statement'}
+      {'include': '#error-stop-statement'}
+      {'include': '#exit-statement'}
+      {'include': '#goto-statement'}
+      {'include': '#pause-statement'}
+      {'include': '#return-statement'}
+      {'include': '#stop-statement'}
+      {'include': '#where-statement'}
+    ]
+  'assign-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.assign.rql'
+    'begin': '(?i)\\b(assign)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.assign.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'match': '(?i)\\s*\\b(to)\\b'
+        'captures':
+          '1': 'name': 'keyword.control.to.rql'
+      }
+      {'include': '$base'}
+    ]
+  'call-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.call.rql'
+    'begin': '(?i)\\s*\\b(call)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.call.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#intrinsic-subroutines'}
+      {
+        'comment': 'User defined subroutine.'
+        'begin': '(?i)\\G\\s*\\b([a-z]\\w*)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'User defined subroutine.'
+        'match': '(?i)\\G\\s*\\b([a-z]\\w*)\\b(?=\\s*[;!\\n])'
+        'captures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+      }
+      {'include': '$base'}
+    ]
+  'continue-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.continue.rql'
+    'begin': '(?i)\\s*\\b(continue)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.continue.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#invalid-character'}
+    ]
+  'cycle-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.control.rql'
+    'begin': '(?i)\\s*\\b(cycle)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.cycle.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+    ]
+  'entry-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.entry.rql'
+    'begin': '(?i)\\s*\\b(entry)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.entry.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.entry.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {'include': '#dummy-variable-list'}
+          {'include': '#result-statement'}
+          {'include': '#language-binding-attribute'}
+        ]
+      }
+    ]
+  'error-stop-statement':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'name': 'meta.statement.control.errorstop.rql'
+    'begin': '(?i)\\s*\\b(error\\s+stop)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.errorstop.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#constants'}
+      {'include': '#string-operators'}
+      {'include': '#invalid-character'}
+    ]
+  'exit-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.control.exit.rql'
+    'begin': '(?i)\\s*\\b(exit)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.exit.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+    ]
+  'goto-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.goto.rql'
+    'begin': '(?i)\\s*\\b(go\\s*to)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.goto.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'pause-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.pause.rql'
+    'begin': '(?i)\\s*\\b(pause)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.pause.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#constants'}
+      {'include': '#invalid-character'}
+    ]
+  'result-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'begin': '(?i)\\s*\\b(result)\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.result.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#dummy-variable'}
+    ]
+  'return-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.return.rql'
+    'begin': '(?i)\\s*\\b(return)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.return.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#invalid-character'}
+    ]
+  'stop-statement':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.statement.control.stop.rql'
+    'begin': '(?i)\\s*\\b(stop)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.stop.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#constants'}
+      {'include': '#string-operators'}
+      {'include': '#invalid-character'}
+    ]
+  # derived type definition:
+  'derived-type-definition':
+    'name': 'meta.derived-type.definition.rql'
+    'begin': '(?i)\\b(type)\\b(?!\\s*(\\(|is\\b|\\=))'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.type.rql'
+    'end': '(?=[;!\\n])'
+    'patterns': [
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '\\G(?=\\s*(,|::))'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns': [
+          {
+            'begin': '(,)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#abstract-attribute'}
+              {'include': '#language-binding-attribute'}
+              {'include': '#extends-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {# body
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.derived-type.rql'
+        'end': '(?i)(?:^|(?<=;))\\s*(end\\s*type)(?:\\s+(?:(\\1)|(\\w+)))?\\b'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endtype.rql'
+          '2': 'name': 'entity.name.derived-type.rql'
+          '3': 'name': 'invalid.error.rql'
+        'patterns':[
+          {'include': '#dummy-variable-list'}
+          {'include': '#comments'}
+          {
+            'comment': 'Derived type specification block.'
+            'name': 'meta.block.specification.rql'
+            'begin': '(?i)^(?!\\s*\\b(?:contains|end\\s*type)\\b)'
+            'end': '(?i)^(?=\\s*\\b(?:contains|end\\s*type)\\b)'
+            'patterns':[
+              {'include': '#comments'}
+              {'include': '#derived-type-component-attribute-specification'}
+              {'include': '#derived-type-component-parameter-specification'}
+              {'include': '#derived-type-component-procedure-specification'}
+              {'include': '#derived-type-component-type-specification'}
+            ]
+          }
+          {# contains section
+            'comment': 'Derived type contains block.'
+            'name': 'meta.block.contains.rql'
+            'begin': '(?i)\\b(contains)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.control.contains.rql'
+            'end': '(?i)(?=\\s*end\\s*type\\b)'
+            'patterns':[
+              {'include': '#comments'}
+              {'include': '#derived-type-contains-attribute-specification'}
+              {'include': '#derived-type-contains-final-procedure-specification'}
+              {'include': '#derived-type-contains-generic-procedure-specification'}
+              {'include': '#derived-type-contains-procedure-specification'}
+            ]
+          }
+        ]
+      }
+    ]
+  'derived-type-component-attribute-specification':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'name': 'meta.statement.attribute-specification.rql'
+    'begin': '(?i)(?=\\s*\\b(?:private|sequence)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#access-attribute'}
+      {'include': '#sequence-attribute'}
+      {'include': '#invalid-character'}
+    ]
+  'derived-type-component-parameter-specification':
+    'comment': 'Derived type parameter.'
+    'match': '(?ix)\\b(integer)\\s*(,)\\s*(kind|len)\\s*(?:(::)\\s*([a-z]\\w*)?)?\\s*(?=[;!\\n])'
+    'captures':
+      '1': 'name': 'storage.type.integer.rql'
+      '2': 'name': 'punctuation.comma.rql'
+      '3': 'name': 'keyword.other.attribute.derived-type.parameter.rql'
+      '4': 'name': 'keyword.operator.double-colon.rql'
+      '5': 'name': 'entity.name.derived-type.parameter.rql'
+  'derived-type-component-procedure-specification':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.specification.procedure.rql'
+    'begin': '(?i)(?=\\b(?:procedure)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#procedure-type'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::|\\())'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'begin': '(,)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#pass-attribute'}
+              {'include': '#nopass-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {'include': '#procedure-name-list'}
+    ]
+  'derived-type-component-type-specification':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'name': 'meta.specification.type.rql'
+    'begin': '(?ix)(?=\\b(?:character|class|complex|double\\s*precision|integer|logical|real|type)\\b(?![^\'";!\\n]*\\bfunction\\b))'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#types'}
+      {'include': '#line-continuation-operator'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::))'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'begin': '(,)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#allocatable-attribute'}
+              {'include': '#codimension-attribute'}
+              {'include': '#contiguous-attribute'}
+              {'include': '#dimension-attribute'}
+              {'include': '#pointer-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {'include': '#name-list'}
+    ]
+  'derived-type-contains-attribute-specification':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'name': 'meta.statement.attribute-specification.rql'
+    'begin': '(?i)(?=\\b(?:private)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#access-attribute'}
+      {'include': '#invalid-character'}
+    ]
+  'derived-type-contains-final-procedure-specification':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.specification.procedure.final.rql'
+    'begin': '(?i)\\b(final)\\b'
+    'beginCaptures':
+      '1': 'name': 'storage.type.final-procedure.rql'
+    'end': '(?=[;!\\n])'
+    'patterns': [
+      {
+        'comment': 'Attribute list.'
+        'name': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(::))'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns': [
+          {'include': '#invalid-word'}
+        ]
+      }
+      {'include': '#procedure-name'}
+    ]
+  'derived-type-contains-generic-procedure-specification':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.specification.procedure.generic.rql'
+    'begin': '(?i)\\b(generic)\\b'
+    'beginCaptures':
+      '1': 'name': 'storage.type.procedure.generic.rql'
+    'end': '(?=[;!\\n])'
+    'patterns': [
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::|\\())'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns': [
+          {
+            'begin': '(,)|^|(?<=&)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,&;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {
+        'comment': 'Name list.'
+        'contentName': 'meta.name-list.rql'
+        'begin': '(?=\\s*[a-z])'
+        'end': '(?=[;!\\n])'
+        'patterns': [
+          {'include': '#IO-keywords'}
+          {'include': '#assignment-keyword'}
+          {'include': '#operator-keyword'}
+          {'include': '#procedure-name'}
+          {'include': '#pointer-operators'}
+        ]
+      }
+    ]
+  'derived-type-contains-procedure-specification':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.specification.procedure.rql'
+    'begin': '(?i)(?=\\b(?:procedure)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#procedure-type'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::|\\())'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'name': 'meta.something.rql'
+            'begin': '(,)|^|(?<=&)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,&;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#deferred-attribute'}
+              {'include': '#non-overridable-attribute'}
+              {'include': '#nopass-attribute'}
+              {'include': '#pass-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {'include': '#procedure-name-list'}
+    ]
+  # enum block:
+  'enum-block-construct':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.enum.rql'
+    'begin': '(?i)\\b(enum)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.enum.rql'
+    'end': '(?i)\\b(end\\s*enum)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.end-enum.rql'
+    'patterns':[
+      {
+        'begin': '\\G\\s*(,)'
+        'beginCaptures':
+          '1': 'name': 'punctuation.comma.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {'include': '#language-binding-attribute'}
+          {'include': '#invalid-word'}
+        ]
+      }
+      {
+        'name': 'meta.block.specification.rql'
+        'begin': '(?i)(?!\\s*\\b(end\\s*enum)\\b)'
+        'end': '(?i)(?=\\b(end\\s*enum)\\b)'
+        'patterns':[
+          {'include': '#comments'}
+          {
+            'name': 'meta.statement.enumerator-specification.rql'
+            'begin': '(?ix)\\b(enumerator)\\b'
+            'beginCaptures':
+              '1': 'name': 'keyword.other.enumerator.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {
+                'comment': 'Attribute list.'
+                'contentName': 'meta.attribute-list.rql'
+                'begin': '(?=\\s*(,|::))'
+                'end': '(::)|(?=[;!\\n])'
+                'endCaptures':
+                  '1': 'name': 'keyword.operator.double-colon.rql'
+                'patterns':[
+                  {'include': '#invalid-word'}
+                ]
+              }
+              {'include': '#comments'}
+              {'include': '#name-list'}
+            ]
+          }
+        ]
+      }
+    ]
+  # execution statements:
+  'execution-statements':
+    'patterns':[
+      {'include': '#allocate-statement'}
+      {'include': '#deallocate-statement'}
+      {'include': '#IO-statements'}
+      {'include': '#nullify-statement'}
+    ]
+  'allocate-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.allocate.rql'
+    'begin': '(?i)\\b(allocate)\\s*(?=\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.allocate.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(?<!\\G)'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#parentheses-dummy-variables'}
+    ]
+  'deallocate-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.deallocate.rql'
+    'begin': '(?i)\\b(deallocate)\\s*(?=\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.deallocate.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(?<!\\G)'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#parentheses-dummy-variables'}
+    ]
+  'IO-statements':
+    'patterns':[
+      {
+        'comment': 'Introduced in the rql 1977 standard.'
+        'name': 'meta.statement.IO.rql'
+        'begin': '(?ix)\\b(?:(backspace)|(close)|(endfile)|(format)|(inquire)|(open)|(read)|(rewind)|(write))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.backspace.rql'
+          '2': 'name': 'keyword.control.close.rql'
+          '3': 'name': 'keyword.control.endfile.rql'
+          '4': 'name': 'keyword.control.format.rql'
+          '5': 'name': 'keyword.control.inquire.rql'
+          '6': 'name': 'keyword.control.open.rql'
+          '7': 'name': 'keyword.control.read.rql'
+          '8': 'name': 'keyword.control.rewind.rql'
+          '9': 'name': 'keyword.control.write.rql'
+          '10': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+          {'include': '#IO-item-list'}
+        ]
+      }
+      {
+        'comment': 'Introduced in the rql 1977 standard.'
+        'match': '(?i)\\b(?:(backspace)|(endfile)|(format)|(print)|(read)|(rewind))\\b'
+        'captures':
+          '1': 'name': 'keyword.control.backspace.rql'
+          '2': 'name': 'keyword.control.endfile.rql'
+          '3': 'name': 'keyword.control.format.rql'
+          '4': 'name': 'keyword.control.print.rql'
+          '5': 'name': 'keyword.control.read.rql'
+          '6': 'name': 'keyword.control.rewind.rql'
+      }
+      {
+        'comment': 'Introduced in the rql 2003 standard.'
+        'begin': '(?i)\\b(?:(flush)|(wait))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'keyword.control.flush.rql'
+          '2': 'name': 'keyword.control.wait.rql'
+          '3': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Introduced in the rql 2003 standard.'
+        'match': '(?i)\\b(flush)\\b'
+        'captures':
+          '1': 'name': 'keyword.control.flush.rql'
+      }
+    ]
+  'nullify-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.nullify.rql'
+    'begin': '(?i)\\b(nullify)\\s*(?=\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.nullify.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(?<!\\G)'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#parentheses-dummy-variables'}
+    ]
+  # global statements:
+  'include-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.include.rql'
+    'begin': '(?i)\\b(include)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.include.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#string-constant'}
+      {'include': '#invalid-character'}
+    ]
+  'import-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.include.rql'
+    'begin': '(?i)\\b(import)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.include.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'begin': '(?i)\\G\\s*(?:(::)|(?=[a-z]))'
+        'beginCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {'include': '#name-list'}
+        ]
+      }
+      {
+        'begin': '\\G\\s*(,)'
+        'beginCaptures':
+          '1': 'name': 'punctuation.comma.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {
+            'match': '(?i)\\G\\s*\\b(all)\\b'
+            'captures':
+              '1': 'name': 'keyword.other.all.rql'
+          }
+          {
+            'match': '(?i)\\G\\s*\\b(none)\\b'
+            'captures':
+              '1': 'name': 'keyword.other.none.rql'
+          }
+          {
+            'begin': '(?i)\\G\\s*\\b(only)\\s*(:)'
+            'beginCaptures':
+              '1': 'name': 'keyword.other.only.rql'
+              '2': 'name': 'keyword.other.colon.rql'
+            'end': '(?=[;!\\n])'
+            'patterns':[
+              {'include': '#name-list'}
+            ]
+          }
+          {'include': '#invalid-word'}
+        ]
+      }
+    ]
+  # interfaces:
+  'interface-block-constructs':
+    'patterns':[
+      {'include': '#abstract-interface-block-construct'}
+      {'include': '#explicit-interface-block-construct'}
+      {'include': '#generic-interface-block-construct'}
+    ]
+  'abstract-interface-block-construct':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.interface.abstract.rql'
+    'begin': '(?i)\\b(abstract)\\s+(interface)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.other.attribute.rql.modern'
+      '2': 'name': 'keyword.control.interface.rql'
+    'end': '(?i)\\b(end\\s*interface)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endinterface.rql.modern'
+    'patterns': [
+      {'include': '$base'}
+    ]
+  'explicit-interface-block-construct':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.interface.explicit.rql'
+    'begin': '(?i)\\b(interface)\\b(?=\\s*[;!\\n])'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.interface.rql'
+    'end': '(?i)\\b(end\\s*interface)\\b'
+    'endCaptures':
+      '1': 'name': 'keyword.control.endinterface.rql.modern'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'generic-interface-block-construct':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.interface.generic.rql'
+    'begin': '(?i)\\b(interface)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.interface.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'comment': 'Assignment generic interface.'
+        'begin': '(?ix)\\G\\s*\\b(assignment)\\s*
+          (\\()\\s*(?:(\\=)|(\\S.*))\\s*(\\))'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.assignment.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+          '3': 'name': 'keyword.operator.assignment.rql'
+          '4': 'name': 'invalid.error.rql'
+          '5': 'name': 'punctuation.parentheses.right.rql'
+        'end': '(?ix)\\b(end\\s*interface)\\b
+          (?:\\s*\\b(\\1)\\b\\s*(\\()\\s*(?:(\\3)|(\\S.*))\\s*(\\)))?'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endinterface.rql'
+          '2': 'name': 'keyword.other.assignment.rql'
+          '3': 'name': 'punctuation.parentheses.left.rql'
+          '4': 'name': 'keyword.operator.assignment.rql'
+          '5': 'name': 'invalid.error.rql'
+          '6': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#interface-procedure-statement'}
+          {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Operator generic interface.'
+        'begin': '(?ix)\\G\\s*\\b(operator)\\s*
+          (\\()\\s*(?:
+            (\\.[a-z]+\\.|\\=\\=|\\/\\=|\\>\\=|\\>|\\<|\\<\\=|\\-|\\+|\\/|\\/\\/|\\*\\*|\\*)
+            |(\\S.*)
+          )\\s*(\\))'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.operator.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+          '3': 'name': 'keyword.operator.rql'
+          '4': 'name': 'invalid.error.rql'
+          '5': 'name': 'punctuation.parentheses.right.rql'
+        'end': '(?ix)\\b(end\\s*interface)\\b
+          (?:\\s*\\b(\\1)\\b\\s*(\\()\\s*(?:(\\3)|(\\S.*))\\s*(\\)))?'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endinterface.rql'
+          '2': 'name': 'keyword.other.operator.rql'
+          '3': 'name': 'punctuation.parentheses.left.rql'
+          '4': 'name': 'keyword.operator.rql'
+          '5': 'name': 'invalid.error.rql'
+          '6': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#interface-procedure-statement'}
+          {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Read/Write generic interface.'
+        'begin': '(?ix)\\G\\s*\\b(?:(read)|(write))\\s*
+          (\\()\\s*(?:(formatted)|(unformatted)|(\\S.*))\\s*(\\))'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.read.rql'
+          '2': 'name': 'keyword.other.write.rql'
+          '3': 'name': 'punctuation.parentheses.left.rql'
+          '4': 'name': 'keyword.other.formatted.rql'
+          '5': 'name': 'keyword.other.unformatted.rql'
+          '6': 'name': 'invalid.error.rql'
+          '7': 'name': 'punctuation.parentheses.right.rql'
+        'end': '(?ix)\\b(end\\s*interface)\\b(?:\\s*\\b(?:(\\2)|(\\3))\\b\\s*
+          (\\()\\s*(?:(\\4)|(\\5)|(\\S.*))\\s*(\\)))?'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endinterface.rql'
+          '2': 'name': 'keyword.other.read.rql'
+          '3': 'name': 'keyword.other.write.rql'
+          '4': 'name': 'punctuation.parentheses.left.rql'
+          '5': 'name': 'keyword.other.formatted.rql'
+          '6': 'name': 'keyword.other.unformatted.rql'
+          '7': 'name': 'invalid.error.rql'
+          '8': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#interface-procedure-statement'}
+          {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Generic interface.'
+        'begin': '(?i)\\G\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.rql'
+        'end': '(?i)\\b(end\\s*interface)\\b(?:\\s*\\b(\\1)\\b)?'
+        'endCaptures':
+          '1': 'name': 'keyword.control.endinterface.rql'
+          '2': 'name': 'entity.name.function.rql'
+        'patterns':[
+          {'include': '#interface-procedure-statement'}
+          {'include': '$base'}
+        ]
+      }
+    ]
+  'interface-procedure-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.procedure.rql'
+    'begin': '(?i)(?=[^\'";!\\n]*\\bprocedure\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'comment': 'Attribute list.'
+        'name': 'meta.attribute-list.rql'
+        'begin': '(?i)(?=\\G\\s*(?!\\bprocedure\\b))'
+        'end': '(?i)(?=\\bprocedure\\b)'
+        'patterns':[
+          {'include': '#module-attribute'}
+          {'include': '#invalid-word'}
+        ]
+      }
+      {
+        'comment': 'Procedure statement.'
+        'begin': '(?i)\\s*\\b(procedure)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.procedure.rql'
+        'end': '(?=[;!\\n])'
+        'patterns': [
+          {
+            'match': '\\G\\s*(::)'
+            'captures':
+              '1': 'name': 'keyword.operator.double-colon.rql'
+          }
+          {'include': '#procedure-name-list'}
+        ]
+      }
+    ]
+  # intrinsic procedures:
+  'intrinsic-functions':
+    'patterns':[
+      {
+        'comment': 'Intrinsic functions introduced in the rql 2008 standard.'
+        'begin': '(?ix)\\b(acosh|asinh|atanh|bge|bgt|ble|blt|dshiftl|dshiftr|
+          findloc|hypot|iall|iany|image_index|iparity|is_contiguous|lcobound|
+          leadz|mask[lr]|merge_bits|norm2|num_images|parity|popcnt|poppar|
+          shift[alr]|storage_size|this_image|trailz|ucobound)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Functions accessable through the intrinsic rql_SPECIAL_FUNCTIONS module. Introduced in the rql 2008 standard.'
+        'begin': '(?ix)\\b(bessel_[jy][01n]|erf(c(_scaled)?)?|gamma|log_gamma)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic functions introduced in the rql 2003 standard.'
+        'begin': '(?ix)\\b(command_argument_count|extends_type_of|is_iostat_end|
+          is_iostat_eor|new_line|same_type_as|selected_char_kind)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Functions accessable through the intrinsic IEEE_ARITHMETIC module. Introduced in the rql 2003 standard.'
+        'begin': '(?ix)\\b(ieee_(
+          class|copy_sign|is_(finite|nan|negative|normal)|logb|next_after|rem|
+          rint|scalb|selected_real_kind|
+          support_(datatype|denormal|divide|inf|io|nan|rounding|sqrt|standard|underflow_control)|
+          unordered|value))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Functions accessable through the intrinsic IEEE_EXCEPTIONS module. Introduced in the rql 2003 standard.'
+        'begin': '(?ix)\\b(ieee_support_(flag|halting))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Functions accessable through the intrinsic ISO_C_BINDING module. Introduced in the rql 2003 standard.'
+        'begin': '(?ix)\\b(c_(associated|funloc|loc|sizeof))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Functions accessable through the intrinsic ISO_rql_ENV module. Introduced in the rql 2003 standard.'
+        'begin': '(?ix)\\b(compiler_(options|version))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic functions introduced in the rql 1995 standard.'
+        'begin': '(?ix)\\b(null)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic functions introduced in the rql 1990 standard.'
+        'begin': '(?ix)\\b(achar|adjustl|adjustr|all|allocated|associated|any|bit_size|
+          btest|ceiling|count|cshift|digits|dot_product|eoshift|epsilon|exponent|
+          floor|fraction|huge|iachar|iand|ibclr|ibits|ibset|ieor|ior|ishftc?|
+          kind|lbound|len_trim|logical|matmul|maxexponent|maxloc|maxval|merge|
+          minexponent|minloc|minval|modulo|nearest|not|pack|precision|present|
+          product|radix|range|repeat|reshape|rrspacing|scale|scan|
+          selected_(int|real)_kind|set_exponent|shape|size|spacing|spread|sum|
+          tiny|transfer|transpose|trim|ubound|unpack|verify)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic functions introduced in the rql 1977 standard.'
+        'begin': '(?ix)\\b([icd]?abs|acos|[ad]int|[ad]nint|aimag|amax[01]|
+          amin[01]|d?asin|d?atan|d?atan2|char|conjg|[cd]?cos|d?cosh|cmplx|dble|
+          i?dim|dmax1|dmin1|dprod|[cd]?exp|float|ichar|idint|ifix|index|int|len|
+          lge|lgt|lle|llt|[acd]?log|[ad]?log10|max[01]?|min[01]?|[ad]?mod|
+          (id)?nint|real|[di]?sign|[cd]?sin|d?sinh|sngl|[cd]?sqrt|d?tan|d?tanh)
+          \\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'support.function.intrinsic.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+    ]
+  'intrinsic-subroutines':
+    'patterns':[
+      {
+        'comment': 'Intrinsic subroutines introduced in the rql 1990 standard.'
+        'begin': '(?ix)\\G\\s*\\b(date_and_time|mvbits|random_number|random_seed|
+          system_clock)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic subroutines introduced in the rql 1995 standard.'
+        'begin': '(?i)\\G\\s*\\b(cpu_time)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Subroutines accessable through the intrinsic IEEE_ARITHMETIC
+          module. Introduced in the rql 2003 standard.'
+        'begin': '(?i)\\G\\s*\\b(ieee_(get|set)_(rounding|underflow)_mode)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Subroutines accessable through the intrinsic IEEE_EXCEPTIONS
+          module. Introduced in the rql 2003 standard.'
+        'begin': '(?i)\\G\\s*\\b(ieee_(get|set)_(flag|halting_mode|status))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Subroutines accessable through the intrinsic ISO_C_BINDING
+          module. Introduced in the rql 2003 standard.'
+        'begin': '(?i)\\G\\s*\\b(c_f_(pointer|procpointer))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'comment': 'Intrinsic subroutines introduced in the rql 2008 standard.'
+        'begin': '(?ix)\\G\\s*\\b(execute_command_line|get_command|
+          get_command_argument|get_environment_variable|move_alloc)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'entity.name.function.subroutine.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+    ]
+  # operators:
+  'operators':
+    'patterns':[
+      {'include': '#arithmetic-operators'}
+      {'include': '#assignment-operator'}
+      {'include': '#derived-type-operators'}
+      {'include': '#logical-operators'}
+      {'include': '#pointer-operators'}
+      {'include': '#string-operators'}
+      {'include': '#user-defined-operators'}
+    ]
+  'arithmetic-operators':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'match': '(\\-)|(\\+)|(\\/)|(\\*\\*)|(\\*)'
+    'captures':
+      '1': 'name': 'keyword.operator.subtraction.rql'
+      '2': 'name': 'keyword.operator.addition.rql'
+      '3': 'name': 'keyword.operator.division.rql'
+      '4': 'name': 'keyword.operator.power.rql'
+      '5': 'name': 'keyword.operator.multiplication.rql'
+  'assignment-operator':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'keyword.operator.assignment.rql'
+    'match': '(?<!\\=)(\\=)(?!\\=)'
+  'derived-type-operators':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'match': '\\s*(\\%)'
+    'captures':
+      '1': 'name': 'keyword.operator.selector.rql'
+  'line-continuation-operator':
+    'comment': 'Operator that allows a line to be continued on the next line.'
+    'patterns':[
+      {
+        'match': '(?:^|(?<=;))\\s*(&)'
+        'captures':
+          '1': 'name': 'keyword.operator.line-continuation.rql'
+      }
+      {
+        'contentName': 'meta.line-continuation.rql'
+        'begin': '\\s*(&)'
+        'beginCaptures':
+          '1': 'name': 'keyword.operator.line-continuation.rql'
+        'end': '(?i)^(?:\\s*(&))?'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.line-continuation.rql'
+        'patterns':[
+          {'include': '#comments'}
+          {
+            'name': 'invalid.error.rql'
+            'match': '\\S[^!]*'
+          }
+        ]
+      }
+    ]
+  'logical-operators':
+    'patterns':[
+      {
+        'comment': 'Introduced in the rql 1977 standard.'
+        'match': '(?ix)(\\.(and|eq|eqv|le|lt|ge|gt|ne|neqv|not|or)\\.)'
+        'name': 'keyword.operator.logical.rql'
+      }
+      {
+        'comment': 'Introduced in the rql 1990 standard.'
+        'name': 'keyword.operator.logical.rql.modern'
+        'match': '(\\=\\=|\\/\\=|\\>\\=|\\>|\\<|\\<\\=)'
+      }
+    ]
+  'pointer-operators':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'keyword.operator.point.rql'
+    'match': '(\\=\\>)'
+  'string-operators':
+    'comment': 'Introduced in the rql 19?? standard.'
+    'name': 'keyword.operator.concatination.rql'
+    'match': '(\\/\\/)'
+  'string-line-continuation-operator':
+    'comment': 'Operator that allows a line to be continued on the next line.'
+    'begin': '(&)(?=\\s*\\n)'
+    'beginCaptures':
+      '1': 'name': 'keyword.operator.line-continuation.rql'
+    'end': '(?i)^(?:(?=\\s*[^\\s!&])|\\s*(&))'
+    'endCaptures':
+      '1': 'name': 'keyword.operator.line-continuation.rql'
+    'patterns':[
+      {'include': '#comments'}
+      {
+        'name': 'invalid.error.rql'
+        'match': '\\S.*'
+      }
+    ]
+  'user-defined-operators':
+    'match': '(?i)\\s*(\\.[a-z]+\\.)'
+    'captures':
+      '1': 'name': 'keyword.operator.user-defined.rql'
+  # program-units:
+  'block-data-definition':
+    'name': 'meta.block-data.rql'
+    'begin': '(?i)\\b(block\\s*data)\\b(?:\\s+([a-z]\\w*)\\b)?'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.block-data.rql'
+      '2': 'name': 'entity.name.block-data.rql'
+    'end': '(?ix)\\b(?:(end\\s*block\\s*data)(?:\\s+(\\2))?|(end))\\b
+      (?:\\s*(\\S((?!\\n).)*))?'
+    'endCaptures':
+      '1': 'name': 'keyword.control.end-block-data.rql'
+      '2': 'name': 'entity.name.block-data.rql'
+      '3': 'name': 'keyword.control.end-block-data.rql'
+      '4': 'name': 'invalid.error.rql'
+    'patterns': [
+      {'include': '$base'}
+    ]
+  'function-definition':
+    'comment': 'Funtion program unit. Introduced in the rql 1977 standard.'
+    'name': 'meta.function.rql'
+    'begin': '(?i)(?=([^\'";!\\n](?!\\bend))*\\bfunction\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'comment': 'Function attribute list.'
+        'name': 'meta.attribute-list.rql'
+        'begin': '(?i)(?=\\G\\s*(?!\\bfunction\\b))'
+        'end': '(?i)(?=\\bfunction\\b)'
+        'patterns':[
+          {'include': '#elemental-attribute'}
+          {'include': '#module-attribute'}
+          {'include': '#pure-attribute'}
+          {'include': '#recursive-attribute'}
+          {'include': '#character-type'}
+          {'include': '#derived-type'}
+          {'include': '#logical-type'}
+          {'include': '#numeric-type'}
+          {'include': '#invalid-word'}
+        ]
+      }
+      {
+        'begin': '(?i)\\b(function)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.function.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {
+            'comment': 'Function body.'
+            'begin': '(?i)\\G\\s*\\b([a-z]\\w*)\\b'
+            'beginCaptures':
+              '1': 'name': 'entity.name.function.rql'
+            'end': '(?ix)\\s*\\b(?:(end\\s*function)(?:\\s+(\\1))?|(end))\\b
+              \\s*([^;!\\n]+)?(?=[;!\\n])'
+            'endCaptures':
+              '1': 'name': 'keyword.other.endfunction.rql'
+              '2': 'name': 'entity.name.function.rql'
+              '3': 'name': 'keyword.other.endfunction.rql'
+              '4': 'name': 'invalid.error.rql'
+            'patterns': [
+              {
+                'comment': 'Rest of the first line in function construct.'
+                'name': 'meta.function.first-line.rql'
+                'begin': '\\G(?!\\s*[;!\\n])'
+                'end': '(?=[;!\\n])'
+                'patterns':[
+                  {'include': '#dummy-variable-list'}
+                  {'include': '#result-statement'}
+                  {'include': '#language-binding-attribute'}
+                ]
+              }
+              {
+                'comment': 'Specification and execution block.'
+                'name': 'meta.block.specification.rql'
+                'begin': '(?i)(?!(?:end\\s*[;!\\n]|end\\s*function\\b))'
+                'end': '(?i)(?=(?:end\\s*[;!\\n]|end\\s*function\\b))'
+                'patterns':[
+                  {
+                    'comment': 'Contains block.'
+                    'name': 'meta.block.contains.rql'
+                    'begin': '(?i)\\b(contains)\\b'
+                    'beginCaptures':
+                      '1': 'name': 'keyword.control.contains.rql'
+                    'end': '(?i)(?=\\s*(?:end\\s*[;!\\n]|end\\s*function\\b))'
+                    'patterns':[
+                      {'include': '$base'}
+                    ]
+                  }
+                  {'include': '$base'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  'module-definition':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.module.rql'
+    'begin': '(?ix)(?=\\b(module)\\b)(?![^\'";!\\n]*
+      \\b(?:function|procedure|subroutine)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'match': '(?i)\\G\\s*\\b(module)\\b'
+        'captures':
+          '1': 'name': 'keyword.other.program.rql'
+      }
+      {
+        'comment': 'Module body.'
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.module.rql'
+        'end': '(?ix)\\b(?:(end\\s*module)(?:\\s+(\\1))?|(end))\\b
+          \\s*([^;!\\n]+)?(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.other.endmodule.rql'
+          '2': 'name': 'entity.name.module.rql'
+          '3': 'name': 'keyword.other.endmodule.rql'
+          '4': 'name': 'invalid.error.rql'
+        'applyEndPatternLast': 1
+        'patterns': [
+          {
+            'comment': 'Module specification block.'
+            'name': 'meta.block.specification.rql'
+            'begin': '\\G'
+            'end': '(?i)(?=\\b(?:end\\s*[;!\\n]|end\\s*module\\b))'
+            'patterns':[
+              {
+                'comment': 'Module contains block.'
+                'name': 'meta.block.contains.rql'
+                'begin': '(?i)\\b(contains)\\b'
+                'beginCaptures':
+                  '1': 'name': 'keyword.control.contains.rql'
+                'end': '(?i)(?=\\s*(?:end\\s*[;!\\n]|end\\s*module\\b))'
+                'patterns':[
+                  {'include': '$base'}
+                ]
+              }
+              {'include': '$base'}
+            ]
+          }
+        ]
+      }
+    ]
+  'program-definition':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'name': 'meta.program.rql'
+    'begin': '(?i)(?=\\b(program)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'match': '(?i)\\G\\s*\\b(program)\\b'
+        'captures':
+          '1': 'name': 'keyword.other.program.rql'
+      }
+      {
+        'comment': 'Program body.'
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.program.rql'
+        'end': '(?ix)\\b(?:(end\\s*program)(?:\\s+(\\1))?|(end))\\b\\s*([^;!\\n]+)?(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.other.endprogram.rql'
+          '2': 'name': 'entity.name.program.rql'
+          '3': 'name': 'keyword.other.endprogram.rql'
+          '4': 'name': 'invalid.error.rql'
+        'applyEndPatternLast': 1
+        'patterns': [
+          {
+            'comment': 'Program specification block.'
+            'name': 'meta.block.specification.rql'
+            'begin': '\\G'
+            'end': '(?i)(?=\\b(?:end\\s*[;!\\n]|end\\s*program\\b))'
+            'patterns':[
+              {
+                'comment': 'Program contains block.'
+                'name': 'meta.block.contains.rql'
+                'begin': '(?i)\\b(contains)\\b'
+                'beginCaptures':
+                  '1': 'name': 'keyword.control.contains.rql'
+                'end': '(?i)(?=(?:end\\s*[;!\\n]|end\\s*program\\b))'
+                'patterns':[
+                  {'include': '$base'}
+                ]
+              }
+              {'include': '$base'}
+            ]
+          }
+        ]
+      }
+    ]
+  'procedure-definition':
+    'comment': 'Procedure program unit. Introduced in the rql 2008 standard.'
+    'name': 'meta.procedure.rql'
+    'begin': '(?i)(?=[^\'";!\\n]*\\bmodule\\s+procedure\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'begin': '(?i)\\s*\\b(module\\s+procedure)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.procedure.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {
+            'comment': 'Procedure body.'
+            'begin': '(?i)\\G\\s*\\b([a-z]\\w*)\\b'
+            'beginCaptures':
+              '1': 'name': 'entity.name.function.procedure.rql'
+            'end': '(?ix)\\s*\\b(?:(end\\s*procedure)(?:\\s+(\\1))?|(end))\\b
+              \\s*([^;!\\n]+)?(?=[;!\\n])'
+            'endCaptures':
+              '1': 'name': 'keyword.other.endprocedure.rql'
+              '2': 'name': 'entity.name.function.procedure.rql'
+              '3': 'name': 'keyword.other.endprocedure.rql'
+              '4': 'name': 'invalid.error.rql'
+            'patterns': [
+              {
+                'comment': 'Rest of the first line in procedure construct - should be empty.'
+                'name': 'meta.first-line.rql'
+                'begin': '\\G(?!\\s*[;!\\n])'
+                'end': '(?=[;!\\n])'
+                'patterns':[
+                  {'include': '#invalid-character'}
+                ]
+              }
+              {
+                'comment': 'Specification and execution block.'
+                'name': 'meta.block.specification.rql'
+                'begin': '(?i)(?!\\s*(?:contains\\b|end\\s*[;!\\n]|end\\s*procedure\\b))'
+                'end': '(?i)(?=\\s*(?:contains\\b|end\\s*[;!\\n]|end\\s*procedure\\b))'
+                'patterns':[
+                  {'include': '$self'}
+                ]
+              }
+              {
+                'comment': 'Contains block.'
+                'name': 'meta.block.contains.rql'
+                'begin': '(?i)\\s*(contains)\\b'
+                'beginCaptures':
+                  '1': 'name': 'keyword.control.contains.rql'
+                'end': '(?i)(?=\\s*(?:end\\s*[;!\\n]|end\\s*procedure\\b))'
+                'patterns':[
+                  {'include': '$self'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  'subroutine-definition':
+    'comment': 'Subroutine program unit. Introduced in the rql 1977 standard.'
+    'name': 'meta.subroutine.rql'
+    'begin': '(?i)(?=([^\'";!\\n](?!\\bend))*\\bsubroutine\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'comment': 'Attribute list.'
+        'name': 'meta.attribute-list.rql'
+        'begin': '(?i)(?=\\G\\s*(?!\\bsubroutine\\b))'
+        'end': '(?i)(?=\\bsubroutine\\b)'
+        'patterns':[
+          {'include': '#elemental-attribute'}
+          {'include': '#module-attribute'}
+          {'include': '#pure-attribute'}
+          {'include': '#recursive-attribute'}
+          {'include': '#invalid-word'}
+        ]
+      }
+      {
+        'begin': '(?i)\\s*\\b(subroutine)\\b'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.subroutine.rql'
+        'end': '(?=[;!\\n])'
+        'patterns':[
+          {
+            'comment': 'Subroutine body.'
+            'begin': '(?i)\\G\\s*\\b([a-z]\\w*)\\b'
+            'beginCaptures':
+              '1': 'name': 'entity.name.function.subroutine.rql'
+            'end': '(?ix)\\b(?:(end\\s*subroutine)(?:\\s+(\\1))?|(end))\\b
+              \\s*([^;!\\n]+)?(?=[;!\\n])'
+            'endCaptures':
+              '1': 'name': 'keyword.other.endsubroutine.rql'
+              '2': 'name': 'entity.name.function.subroutine.rql'
+              '3': 'name': 'keyword.other.endsubroutine.rql'
+              '4': 'name': 'invalid.error.rql'
+            'patterns': [
+              {
+                'comment': 'Rest of the first line in subroutine construct.'
+                'name': 'meta.first-line.rql'
+                'begin': '\\G(?!\\s*[;!\\n])'
+                'end': '(?=[;!\\n])'
+                'patterns':[
+                  {'include': '#dummy-variable-list'}
+                  {'include': '#language-binding-attribute'}
+                ]
+              }
+              {
+                'comment': 'Specification and execution block.'
+                'name': 'meta.block.specification.rql'
+                'begin': '(?i)(?!\\b(?:end\\s*[;!\\n]|end\\s*subroutine\\b))'
+                'end': '(?i)(?=\\b(?:end\\s*[;!\\n]|end\\s*subroutine\\b))'
+                'patterns':[
+                  {
+                    'comment': 'Contains block.'
+                    'name': 'meta.block.contains.rql'
+                    'begin': '(?i)\\b(contains)\\b'
+                    'beginCaptures':
+                      '1': 'name': 'keyword.control.contains.rql'
+                    'end': '(?i)(?=(?:end\\s*[;!\\n]|end\\s*subroutine\\b))'
+                    'patterns':[
+                      {'include': '$base'}
+                    ]
+                  }
+                  {'include': '$base'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  'submodule-definition':
+    'comment': 'Introduced in the rql 2008 standard.'
+    'name': 'meta.submodule.rql'
+    'begin': '(?i)(?=\\b(submodule)\\s*\\()'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'begin': '(?i)\\G\\s*\\b(submodule)\\s*(\\()\\s*(\\w+)'
+        'beginCaptures':
+          '1': 'name': 'keyword.other.submodule.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+          '3': 'name': 'entity.name.module.rql'
+        'end': '(\\))'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.left.rql'
+        'patterns':[
+          # {'include': '$base'}
+        ]
+      }
+      {
+        'comment': 'Submodule body.'
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.module.submodule.rql'
+        'end': '(?ix)\\s*\\b(?:(end\\s*submodule)(?:\\s+(\\1))?|(end))\\b
+          \\s*([^;!\\n]+)?(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.other.endsubmodule.rql'
+          '2': 'name': 'entity.name.module.submodule.rql'
+          '3': 'name': 'keyword.other.endsubmodule.rql'
+          '4': 'name': 'invalid.error.rql'
+        'applyEndPatternLast': 1
+        'patterns': [
+          {
+            'comment': 'Submodule specification block.'
+            'name': 'meta.block.specification.rql'
+            'begin': '\\G'
+            'end': '(?i)(?=\\b(?:end\\s*[;!\\n]|end\\s*submodule\\b))'
+            'patterns':[
+              {
+                'comment': 'Submodule contains block.'
+                'name': 'meta.block.contains.rql'
+                'begin': '(?i)\\b(contains)\\b'
+                'beginCaptures':
+                  '1': 'name': 'keyword.control.contains.rql'
+                'end': '(?i)(?=\\s*(?:end\\s*[;!\\n]|end\\s*submodule\\b))'
+                'patterns':[
+                  {'include': '$base'}
+                ]
+              }
+              {'include': '$base'}
+            ]
+          }
+        ]
+      }
+    ]
+  # specification-statements:
+  'type-specification-statements':
+    'name': 'meta.specification.type.rql'
+    'begin': '(?ix)(?=\\b(?:character|class|complex|double\\s*precision|integer|logical|real|type)\\b(?![^\'";!\\n]*\\bfunction\\b))'
+    'end': '(?=[\\);!\\n])'
+    'patterns':[
+      {'include': '#types'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::))'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'begin': '(,)|^|(?<=&)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,&;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#allocatable-attribute'}
+              {'include': '#asynchronous-attribute'}
+              {'include': '#codimension-attribute'}
+              {'include': '#contiguous-attribute'}
+              {'include': '#dimension-attribute'}
+              {'include': '#external-attribute'}
+              {'include': '#intent-attribute'}
+              {'include': '#intrinsic-attribute'}
+              {'include': '#language-binding-attribute'}
+              {'include': '#optional-attribute'}
+              {'include': '#parameter-attribute'}
+              {'include': '#pointer-attribute'}
+              {'include': '#protected-attribute'}
+              {'include': '#save-attribute'}
+              {'include': '#target-attribute'}
+              {'include': '#value-attribute'}
+              {'include': '#volatile-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {'include': '#name-list'}
+    ]
+  'procedure-specification-statement':
+    'comment': 'Introduced in the rql 2003 standard.'
+    'name': 'meta.specification.procedure.rql'
+    'begin': '(?i)(?=\\b(?:procedure)\\b)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#procedure-type'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::|\\())'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'begin': '(,)|^|(?<=&)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,&;!\\n])'
+            'patterns':[
+              {'include': '#access-attribute'}
+              {'include': '#intent-attribute'}
+              {'include': '#optional-attribute'}
+              {'include': '#pointer-attribute'}
+              {'include': '#protected-attribute'}
+              {'include': '#save-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {'include': '#procedure-name-list'}
+    ]
+  # specification statements:
+  'specification-statements':
+    'patterns':[
+      {'include': '#attribute-specification-statement'}
+      {'include': '#common-statement'}
+      {'include': '#data-statement'}
+      {'include': '#equivalence-statement'}
+      {'include': '#implicit-statement'}
+      {'include': '#namelist-statement'}
+      {'include': '#use-statement'}
+    ]
+  'attribute-specification-statement':
+    'name': 'meta.statement.attribute-specification.rql'
+    'begin': '(?ix)(?=\\b(?:allocatable|asynchronous|contiguous
+      |external|intrinsic|optional|parameter|pointer|private|protected|public
+      |save|target|value|volatile)\\b
+      |(bind|dimension|intent)\\s*\\(
+      |(codimension)\\s*\\[)'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '#access-attribute'}
+      {'include': '#allocatable-attribute'}
+      {'include': '#asynchronous-attribute'}
+      {'include': '#codimension-attribute'}
+      {'include': '#contiguous-attribute'}
+      {'include': '#dimension-attribute'}
+      {'include': '#external-attribute'}
+      {'include': '#intent-attribute'}
+      {'include': '#intrinsic-attribute'}
+      {'include': '#language-binding-attribute'}
+      {'include': '#optional-attribute'}
+      {'include': '#parameter-attribute'}
+      {'include': '#pointer-attribute'}
+      {'include': '#protected-attribute'}
+      {'include': '#save-attribute'}
+      {'include': '#target-attribute'}
+      {'include': '#value-attribute'}
+      {'include': '#volatile-attribute'}
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*::)'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {'include': '#invalid-word'}
+        ]
+      }
+      {'include': '#name-list'}
+    ]
+  'common-statement':
+    'begin': '(?i)\\b(common)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.common.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'data-statement':
+    'begin': '(?i)\\b(data)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.data.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'equivalence-statement':
+    'begin': '(?i)\\b(equivalence)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.common.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'begin': '(?:\\G|(,))'
+        'beginCaptures':
+          '1': 'name': 'puntuation.comma.rql'
+        'end': '(?=[,;!\\n])'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+    ]
+  'implicit-statement':
+    'name': 'meta.statement.implicit.rql'
+    'begin': '(?i)\\b(implicit)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.other.implicit.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'match': '(?i)\\s*\\b(none)\\b'
+        'captures':
+          '1': 'name': 'keyword.other.none.rql'
+      }
+      {'include': '$base'}
+    ]
+  'namelist-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'begin': '(?i)\\b(namelist)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.namelist.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {'include': '$base'}
+    ]
+  'use-statement':
+    'comment': 'Introduced in the rql 1990 standard.'
+    'name': 'meta.statement.use.rql'
+    'begin': '(?i)\\b(use)\\b'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.use.rql'
+    'end': '(?=[;!\\n])'
+    'patterns':[
+      {
+        'comment': 'Attribute list.'
+        'contentName': 'meta.attribute-list.rql'
+        'begin': '(?=\\s*(,|::|\\())'
+        'end': '(::)|(?=[;!\\n])'
+        'endCaptures':
+          '1': 'name': 'keyword.operator.double-colon.rql'
+        'patterns':[
+          {
+            'begin': '(,)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[,;!\\n])'
+            'patterns':[
+              {'include': '#intrinsic-attribute'}
+              {'include': '#non-intrinsic-attribute'}
+              {'include': '#invalid-word'}
+            ]
+          }
+        ]
+      }
+      {
+        'begin': '(?i)\\s*\\b([a-z]\\w*)\\b'
+        'beginCaptures':
+          '1': 'name': 'entity.name.module.rql'
+        'end': '(?=[;!\\n])'
+        'patterns': [
+          {
+            'begin': '(,)'
+            'beginCaptures':
+              '1': 'name': 'punctuation.comma.rql'
+            'end': '(?=::|[;!\\n])'
+            'patterns':[
+              {
+                'begin': '(?i)\\s*\\b(only\\s*:)'
+                'beginCaptures':
+                  '1': 'name': 'keyword.control.only.rql'
+                'end': '(?=[;!\\n])'
+                'patterns':[
+                  {'include': '#operator-keyword'}
+                  {'include': '$base'}
+                ]
+              }
+              {
+                'contentName': 'meta.name-list.rql'
+                'begin': '(?i)(?=\\s*[a-z])'
+                'end': '(?=[;!\\n])'
+                'patterns': [
+                  {'include': '#operator-keyword'}
+                  {'include': '$base'}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  # types:
+  'types':
+    'patterns':[
+      {'include': '#character-type'}
+      {'include': '#derived-type'}
+      {'include': '#logical-type'}
+      {'include': '#numeric-type'}
+    ]
+  'character-type':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'patterns':[
+      {
+        'begin': '(?i)\\b(character)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'storage.type.character.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'contentName': 'meta.type-spec.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'match': '(?i)\\b(character)\\b(?:\\s*(\\*)\\s*(\\d*))?'
+        'captures':
+          '1': 'name': 'storage.type.character.rql'
+          '2': 'name': 'keyword.operator.multiplication.rql'
+          '3': 'name': 'constant.numeric.rql'
+      }
+    ]
+  'derived-type':
+    'comment': 'Introduced in the rql 1995 standard.'
+    'name': 'meta.specification.type.derived.rql'
+    'begin': '(?i)\\b(?:(class)|(type))\\s*(?=\\()'
+    'beginCaptures':
+      '1': 'name': 'storage.type.class.rql'
+      '2': 'name': 'storage.type.type.rql'
+      '3': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(?<!\\G)'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'contentName': 'meta.type-spec.rql'
+    'patterns':[
+      {'include': '#parentheses-dummy-variables'}
+    ]
+  'logical-type':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'patterns':[
+      {
+        'begin': '(?i)\\b(logical)\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'storage.type.logical.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'contentName': 'meta.type-spec.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'match': '(?i)\\b(logical)\\b(?:\\s*(\\*)\\s*(\\d*))?'
+        'captures':
+          '1': 'name': 'storage.type.character.rql'
+          '2': 'name': 'keyword.operator.multiplication.rql'
+          '3': 'name': 'constant.numeric.rql'
+      }
+    ]
+  'numeric-type':
+    'comment': 'Introduced in the rql 1977 standard.'
+    'patterns':[
+      {
+        'begin': '(?i)\\b(?:(complex)|(double\\s*precision)|(integer)|(real))\\s*(?=\\()'
+        'beginCaptures':
+          '1': 'name': 'storage.type.complex.rql'
+          '2': 'name': 'storage.type.double.rql'
+          '3': 'name': 'storage.type.integer.rql'
+          '4': 'name': 'storage.type.real.rql'
+          '5': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(?<!\\G)'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'contentName': 'meta.type-spec.rql'
+        'patterns':[
+          {'include': '#parentheses-dummy-variables'}
+        ]
+      }
+      {
+        'match': '(?ix)\\b(?:(complex)|(double\\s*precision)|(integer)|(real))\\b(?:\\s*(\\*)\\s*(\\d*))?'
+        'captures':
+          '1': 'name': 'storage.type.complex.rql'
+          '2': 'name': 'storage.type.double.rql'
+          '3': 'name': 'storage.type.integer.rql'
+          '4': 'name': 'storage.type.real.rql'
+          '5': 'name': 'keyword.operator.multiplication.rql'
+          '6': 'name': 'constant.numeric.rql'
+      }
+    ]
+  'procedure-type':
+    'comment': 'Introduced in the rql ???? standard.'
+    'patterns':[
+      {
+        'begin': '(?i)\\b(procedure)\\s*(\\()'
+        'beginCaptures':
+          '1': 'name': 'storage.type.procedure.rql'
+          '2': 'name': 'punctuation.parentheses.left.rql'
+        'end': '(\\))'
+        'endCaptures':
+          '1': 'name': 'punctuation.parentheses.right.rql'
+        'contentName': 'meta.type-spec.rql'
+        'patterns':[
+          {'include': '#types'}
+          {'include': '#procedure-name'}
+        ]
+      }
+      {
+        'match': '(?i)\\b(procedure)\\b'
+        'captures':
+          '1': 'name': 'storage.type.procedure.rql'
+      }
+    ]
+  # other:
+  'array-constructor':
+    'name': 'meta.contructor.array'
+    'begin': '(?=\\s*(\\[|\\(\\/))'
+    'end': '(?<!\\G)'
+    'patterns':[
+      {'include': '#brackets'}
+      {
+        'begin': '\\s*(\\(\\/)'
+        'beginCaptures':
+          '1': 'name': 'punctuation.bracket.left.rql'
+        'end': '(\\/\\))'
+        'endCaptures':
+          '1': 'name': 'punctuation.bracket.left.rql'
+        'patterns':[
+          {'include': '#comments'}
+          {'include': '#constants'}
+          {'include': '#operators'}
+          {'include': '#array-constructor'}
+          {'include': '#parentheses'}
+          {'include': '#intrinsic-functions'}
+          {'include': '#variable'}
+        ]
+      }
+    ]
+  'brackets':
+    'begin': '\\s*(\\[)'
+    'beginCaptures':
+      '1': 'name': 'punctuation.bracket.left.rql'
+    'end': '(\\])'
+    'endCaptures':
+      '1': 'name': 'punctuation.bracket.left.rql'
+    'patterns':[
+      {'include': '#comments'}
+      {'include': '#constants'}
+      {'include': '#operators'}
+      {'include': '#array-constructor'}
+      {'include': '#parentheses'}
+      {'include': '#intrinsic-functions'}
+      {'include': '#variable'}
+    ]
+  'dummy-variable-list':
+    'begin': '\\G\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'punctuation.definition.parameters.begin.rql'
+    'end': '(\\)|(?=\\n))'
+    'endCaptures':
+      '0': 'name': 'punctuation.definition.parameters.end.rql'
+    'patterns': [
+      {'include': '#dummy-variable'}
+    ]
+  'dummy-variable':
+    'comment': 'dummy variable'
+    'match': '(?i)(?:^|(?<=[&,\\(]))\\s*([a-z]\\w*)'
+    'captures':
+      '1': 'name': 'variable.parameter.rql'
+  'invalid-character':
+    'name': 'invalid.error.rql'
+    'match': '(?i)[^\\s;!\\n]+'
+  'invalid-word':
+    'name': 'invalid.error.rql'
+    'match': '(?i)\\b\\w+\\b'
+  'IO-item-list':
+    'comment': 'Name list.'
+    'contentName': 'meta.name-list.rql'
+    'begin': '(?i)(?=\\s*[a-z0-9"\'])'
+    'end': '(?=[\\);!\\n])'
+    'patterns': [
+      {'include': '#constants'}
+      {'include': '#operators'}
+      {'include': '#intrinsic-functions'}
+      {'include': '#array-constructor'}
+      {'include': '#parentheses'}
+      {'include': '#brackets'}
+      {'include': '#assignment-keyword'}
+      {'include': '#operator-keyword'}
+      {'include': '#variable'}
+    ]
+  'logical-control-expression':
+    'name': 'meta.expression.control.logical.rql'
+    'begin': '\\G(?=\\s*\\()'
+    'end': '(?<!\\G)'
+    'patterns':[
+      {'include': '#parentheses'}
+    ]
+  'name-list':
+    'comment': 'Name list.'
+    'contentName': 'meta.name-list.rql'
+    'begin': '(?i)(?=\\s*[a-z])'
+    'end': '(?=[\\);!\\n])'
+    'patterns': [
+      {'include': '#constants'}
+      {'include': '#operators'}
+      {'include': '#intrinsic-functions'}
+      {'include': '#array-constructor'}
+      {'include': '#parentheses'}
+      {'include': '#brackets'}
+      {'include': '#assignment-keyword'}
+      {'include': '#operator-keyword'}
+      {'include': '#variable'}
+    ]
+  'assignment-keyword':
+    'comment': 'Assignment generic specification.'
+    'begin': '(?i)\\G\\s*\\b(assignment)\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.generic-spec.assignment.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#assignment-operator'}
+      {'include': '#invalid-word'}
+    ]
+  'IO-keywords':
+    'comment': 'IO generic specification.'
+    'begin': '(?i)\\G\\s*\\b(?:(read)|(write))\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.generic-spec.read.rql'
+      '2': 'name': 'keyword.control.generic-spec.write.rql'
+      '3': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {
+        'match': '(?i)\\G\\s*\\b(?:(formatted)|(unformatted))\\b'
+        'captures':
+          '1': 'name': 'keyword.control.generic-spec.formatted.rql'
+          '2': 'name': 'keyword.control.generic-spec.unformatted.rql'
+      }
+      {'include': '#invalid-word'}
+    ]
+  'operator-keyword':
+    'comment': 'Operator generic specification.'
+    'begin': '(?i)\\s*\\b(operator)\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'keyword.control.generic-spec.operator.rql'
+      '2': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#arithmetic-operators'}
+      {'include': '#logical-operators'}
+      {'include': '#user-defined-operators'}
+      {'include': '#invalid-word'}
+    ]
+  'parentheses':
+    'begin': '\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#comments'}
+      {'include': '#constants'}
+      {'include': '#operators'}
+      {'include': '#array-constructor'}
+      {'include': '#parentheses'}
+      {'include': '#intrinsic-functions'}
+      {'include': '#variable'}
+    ]
+  'parentheses-dummy-variables':
+    'begin': '\\s*(\\()'
+    'beginCaptures':
+      '1': 'name': 'punctuation.parentheses.left.rql'
+    'end': '(\\))'
+    'endCaptures':
+      '1': 'name': 'punctuation.parentheses.right.rql'
+    'patterns':[
+      {'include': '#procedure-call-dummy-variable'}
+      {'include': '#comments'}
+      {'include': '#constants'}
+      {'include': '#operators'}
+      {'include': '#array-constructor'}
+      {'include': '#parentheses'}
+      {'include': '#intrinsic-functions'}
+      {'include': '#variable'}
+    ]
+  'procedure-call-dummy-variable':
+    'name': 'variable.parameter.dummy-variable.rql.modern'
+    'match': '(?i)\\s*([a-z]\\w*)(?=\\s*\\=)(?!\\s*\\=\\=)'
+  'procedure-name':
+    'comment': 'Procedure name.'
+    'match': '(?i)\\s*\\b([a-z]\\w*)\\b'
+    'captures':
+      '1': 'name': 'entity.name.function.procedure.rql'
+  'procedure-name-list':
+    'comment': 'Name list.'
+    'contentName': 'meta.name-list.rql'
+    'begin': '(?i)(?=\\s*[a-z])'
+    'end': '(?=[;!\\n])'
+    'patterns': [
+      {
+        'begin': '(?!\\s*\\n)'
+        'end': '(,)|(?=[!;\\n])'
+        'endCaptures':
+          '1': 'name': 'punctuation.comma.rql'
+        'patterns':[
+          {'include': '#procedure-name'}
+          {'include': '#pointer-operators'}
+        ]
+      }
+    ]
+  'variable':
+    'name': 'meta.variable.rql'
+    'begin': '(?i)\\b(?=[a-z])'
+    'end': '(?<!\\G)'
+    'applyEndPatternLast': 1
+    'patterns':[
+      {'include': '#brackets'}
+      {'include': '#derived-type-operators'}
+      {'include': '#parentheses-dummy-variables'}
+      {'include': '#word'}
+    ]
+  'word':
+    'match': '(?i)(?:\\G|(?<=\\%))\\s*\\b([a-z]\\w*)\\b'
